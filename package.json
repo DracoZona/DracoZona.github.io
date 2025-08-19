@@ -1,0 +1,13 @@
+{
+  "name": "dz-blog",
+  "version": "1.0.0",
+  "description": "Static blog generator with hackerish theme",
+  "main": "build.js",
+  "scripts": {
+    "build": "node build.js",
+    "dev": "node build.js && echo Blog built successfully!"
+  },
+  "keywords": ["blog", "static", "markdown", "hacker"],
+  "author": "DZ",
+  "license": "MIT"
+}

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penetration Testing Methodology with Visual Guide - DZ Blog</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/post.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo"><a href="../index.html"><span class="logo-draco">Draco</span><span class="logo-zona">Zona</span><span class="cursor">_</span></a></h1>
+            <nav class="nav">
+                <a href="../index.html">Blog</a>
+                <a href="../about.html">About</a>
+                <a href="../cv.html">CV</a>
+                <a href="../certifications.html">Certifications</a>
+                <a href="../contact.html">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <article class="post">
+                <div class="back-to-blog">
+                    <a href="../index.html" class="back-btn">← Back to Blog</a>
+                </div>
+                
+                <header class="post-header">
+                    <div class="post-meta">
+                        <span class="post-date">January 22, 2024</span>
+                        <span class="post-category">Penetration Testing</span>
+                    </div>
+                    <h1 class="post-title">Penetration Testing Methodology with Visual Guide</h1>
+                    <div class="post-tags">
+                        <span class="tag">pentesting</span><span class="tag">cybersecurity</span>
+                    </div>
+                </header>
+
+                <div class="post-content">
+                    <p><h1>Penetration Testing Methodology with Visual Guide</h1></p><p>Penetration testing follows a structured methodology to ensure comprehensive security assessment. This guide provides a visual walkthrough of the entire process.</p><p><h2>Penetration Testing Phases</h2></p><p>The standard penetration testing methodology consists of five main phases:</p><p><img src="../images/pentest-phases.png" alt="Penetration Testing Phases" class="post-image"></p><p><h3>1. Reconnaissance (Information Gathering)</h3></p><p>The first phase involves gathering as much information as possible about the target:</p><p>#### Passive Reconnaissance<br>- <strong>OSINT (Open Source Intelligence)</strong><br>- Social media profiling<br>- DNS enumeration<br>- Whois lookups<br>- Google dorking</p><p><code></code>`bash<br><h1>DNS enumeration</h1><br>dig target.com ANY<br>nslookup target.com</p><p><h1>Subdomain discovery</h1><br>subfinder -d target.com<br>amass enum -d target.com<br><code></code>`</p><p>#### Active Reconnaissance<br>- Port scanning<br>- Service enumeration<br>- Banner grabbing<br>- Network mapping</p><p><img src="../images/network-scan.png" alt="Network Scanning Process" class="post-image"></p><p><h3>2. Scanning and Enumeration</h3></p><p>This phase involves active probing of the target systems:</p><p>#### Network Scanning<br><code></code>`bash<br><h1>Nmap comprehensive scan</h1><br>nmap -sS -sV -sC -O -A target.com</p><p><h1>UDP scan</h1><br>nmap -sU --top-ports 1000 target.com</p><p><h1>Vulnerability scanning</h1><br>nmap --script vuln target.com<br><code></code>`</p><p>#### Service Enumeration<br>- HTTP/HTTPS services<br>- SMB shares<br>- FTP services<br>- SSH services<br>- Database services</p><p><h3>3. Vulnerability Assessment</h3></p><p>Identify potential security weaknesses:</p><p>#### Automated Scanning<br><code></code>`bash<br><h1>Web application scanning</h1><br>nikto -h https://target.com<br>dirb https://target.com</p><p><h1>Network vulnerability scanning</h1><br>nessus_scan target.com<br>openvas_scan target.com<br><code></code>`</p><p>#### Manual Testing<br>- Code review<br>- Configuration analysis<br>- Business logic flaws<br>- Authentication mechanisms</p><p><img src="../images/vuln-assessment.png" alt="Vulnerability Assessment Flow" class="post-image"></p><p><h3>4. Exploitation</h3></p><p>Attempt to exploit identified vulnerabilities:</p><p>#### Web Application Exploitation<br><code></code>`bash<br><h1>SQL injection testing</h1><br>sqlmap -u "https://target.com/page?id=1" --dbs</p><p><h1>XSS testing</h1><br><script>alert('XSS')</script><br><img src=x onerror=alert('XSS')><br><code></code>`</p><p>#### Network Exploitation<br><code></code>`bash<br><h1>Metasploit framework</h1><br>msfconsole<br>use exploit/windows/smb/ms17_010_eternalblue<br>set RHOSTS target_ip<br>exploit<br><code></code>`</p><p>#### Post-Exploitation<br>- Privilege escalation<br>- Lateral movement<br>- Data exfiltration<br>- Persistence mechanisms</p><p><h3>5. Reporting</h3></p><p>Document findings and provide remediation guidance:</p><p>#### Report Structure<br>1. <strong>Executive Summary</strong><br>2. <strong>Technical Findings</strong><br>3. <strong>Risk Assessment</strong><br>4. <strong>Remediation Recommendations</strong><br>5. <strong>Appendices</strong></p><p><img src="../images/report-structure.png" alt="Report Structure" class="post-image"></p><p><h2>Tools and Frameworks</h2></p><p><h3>Essential Penetration Testing Tools</h3></p><p>#### Network Tools<br>- <strong>Nmap</strong>: Network discovery and security auditing<br>- <strong>Wireshark</strong>: Network protocol analyzer<br>- <strong>Burp Suite</strong>: Web application security testing<br>- <strong>Metasploit</strong>: Exploitation framework</p><p>#### Web Application Tools<br>- <strong>OWASP ZAP</strong>: Web application scanner<br>- <strong>SQLMap</strong>: SQL injection testing<br>- <strong>Nikto</strong>: Web server scanner<br>- <strong>Gobuster</strong>: Directory/file brute-forcer</p><p>#### Operating Systems<br>- <strong>Kali Linux</strong>: Penetration testing distribution<br>- <strong>Parrot Security OS</strong>: Security-focused distribution<br>- <strong>BlackArch</strong>: Arch-based penetration testing distribution</p><p><img src="../images/pentest-tools.png" alt="Penetration Testing Tools" class="post-image"></p><p><h2>Methodology Frameworks</h2></p><p><h3>OWASP Testing Guide</h3><br>The OWASP Web Security Testing Guide provides comprehensive methodology for web application security testing.</p><p><h3>NIST SP 800-115</h3><br>Technical Guide to Information Security Testing and Assessment provides federal guidelines for security testing.</p><p><h3>PTES (Penetration Testing Execution Standard)</h3><br>Comprehensive standard covering all phases of penetration testing.</p><p><h3>OSSTMM (Open Source Security Testing Methodology Manual)</h3><br>Scientific methodology for security testing and analysis.</p><p><h2>Legal and Ethical Considerations</h2></p><p><h3>Authorization Requirements</h3><br>- <strong>Written permission</strong> from system owners<br>- <strong>Scope definition</strong> and boundaries<br>- <strong>Rules of engagement</strong> documentation<br>- <strong>Emergency contacts</strong> and procedures</p><p><h3>Ethical Guidelines</h3><br>- Minimize system disruption<br>- Protect confidential information<br>- Report vulnerabilities responsibly<br>- Follow professional standards</p><p><img src="../images/legal-framework.png" alt="Legal Framework" class="post-image"></p><p><h2>Best Practices</h2></p><p><h3>Documentation</h3><br>- Maintain detailed logs<br>- Screenshot evidence<br>- Command history<br>- Vulnerability details</p><p><h3>Communication</h3><br>- Regular status updates<br>- Immediate critical findings<br>- Clear technical explanations<br>- Executive summaries</p><p><h3>Quality Assurance</h3><br>- Peer review findings<br>- Validate exploits<br>- Verify remediation<br>- Follow-up testing</p><p><h2>Advanced Techniques</h2></p><p><h3>Red Team Operations</h3><br>- Social engineering<br>- Physical security testing<br>- Assumed breach scenarios<br>- Advanced persistent threats (APT) simulation</p><p><h3>Purple Team Exercises</h3><br>- Collaborative testing<br>- Real-time feedback<br>- Detection improvement<br>- Response validation</p><p><img src="../images/red-blue-team.png" alt="Red Team vs Blue Team" class="post-image"></p><p><h2>Conclusion</h2></p><p>Effective penetration testing requires a structured methodology, proper tools, and ethical conduct. The visual guides in this post help illustrate the complex processes involved in comprehensive security assessment.</p><p>Remember: Always obtain proper authorization before conducting any penetration testing activities.</p><p><h2>Image Usage</h2></p><p>To include images in your blog posts, simply:</p><p>1. Place image files in the <code>images/</code> folder<br>2. Reference them in markdown: <code><img src="../images/filename.png" alt="Alt text" class="post-image"></code><br>3. The build system automatically converts them to proper HTML</p><p><em>Stay ethical, stay methodical, and keep testing!</em></p>
+                </div>
+
+                <footer class="post-footer">
+                    <div class="post-navigation">
+                        <a href="../index.html" class="nav-link">← Back to Blog</a>
+                    </div>
+                </footer>
+            </article>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Tender Juicy Hatdog <span class="heart">🌭</span> Hacking is not a crime.</p>
+        </div>
+    </footer>
+
+    <canvas id="matrixCanvas"></canvas>
+    <script src="../js/matrix.js"></script>
+</body>
+</html>

