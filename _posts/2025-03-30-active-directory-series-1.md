@@ -1,7 +1,7 @@
 ---
 title: "Active Directory Series - Machine 1"
 date: "2025-03-30"
-category: ["Active Directory", "HTB_Labs"]
+category: "Active Directory"
 tags: ["AD", "HTB", "Offensive Security"]
 excerpt: "First machine in the Active Directory Exploitation tracks in HackTheBox."
 ---
@@ -64,13 +64,16 @@ I used the credentials of Michael to further enumerate users to check if there a
 ```
 nxc smb <IP> -u "michael.wrightson" -p <password> --users
 ```
+
 After executing the command, I found a user that has a description about his password. So now I also have the credentials of David Orelious. This is getting interesting. 
+
 ![](/ad-series-1/ss7.png)
 
 Since I've got 2 users with credentials already and I tried checking if I can use them to access the DEV share that I found earlier. The user `David` was the one that got in.
 ```
 smbclient -U david.orelious \\\\{IP Address}\\DEV
 ```
+
  I found a powershell script inside the share which was interesting since the filename was `Backup_script.ps1`
  ![](/ad-series-1/ss8.png)
 
@@ -86,6 +89,7 @@ This is the part where I gained initial access. I used the credentials of emily 
 ```
 evil-winrm -i <IP> -u emily.oscars -p <password>
 ```
+
 I have now a remote access through the user `Emily`.
  ![](/ad-series-1/ss10.png)
 
@@ -108,4 +112,5 @@ With the Administrator hash I got, I used Pass the Hash attack to successfully l
  ![](/ad-series-1/ss16.png)
 
 # Conclusion
+
 That's how I completed this challenge. Thank you for reading! I hope you learned something from here. 

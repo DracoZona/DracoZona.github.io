@@ -19,6 +19,16 @@ function convertMarkdownToHtml(markdown) {
     html = html.replace(/^## (.*$)/gm, '<h2>$1</h2>');
     html = html.replace(/^# (.*$)/gm, '<h1>$1</h1>');
     
+    // Handle tables
+    html = html.replace(/(\|[^\n]+\|\n)(\|[-:| ]+\|\n)((\|[^\n]+\|\n?)+)/g, function(match, header, separator, body) {
+        const headerCells = header.trim().split('|').slice(1, -1).map(cell => `<th>${cell.trim()}</th>`).join('');
+        const bodyRows = body.trim().split('\n').map(row => {
+            const cells = row.split('|').slice(1, -1).map(cell => `<td>${cell.trim()}</td>`).join('');
+            return `<tr>${cells}</tr>`;
+        }).join('');
+        return `<table class="markdown-table"><thead><tr>${headerCells}</tr></thead><tbody>${bodyRows}</tbody></table>`;
+    });
+    
     // Handle text formatting
     html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
     html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');

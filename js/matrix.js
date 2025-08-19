@@ -17,14 +17,15 @@ const charArray = chars.split('');
 
 const fontSize = 14;
 const columns = Math.floor(canvas.width / fontSize);
-const drops = Array(columns).fill(0);
+// Initialize drops at random positions instead of all at top
+const drops = Array(columns).fill(0).map(() => Math.floor(Math.random() * (canvas.height / fontSize)));
 
 // Colors
 const colors = ['#8b5cf6', '#ec4899', '#a855f7', '#f472b6'];
 
 function drawMatrix() {
-    // Semi-transparent black background for trail effect
-    ctx.fillStyle = 'rgba(15, 15, 15, 0.05)';
+    // More aggressive fade for gray trails
+    ctx.fillStyle = 'rgba(15, 15, 15, 0.15)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
     ctx.font = `${fontSize}px 'Fira Code', monospace`;

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found | DZ Blog</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo"><a href="index.html"><span class="logo-draco">Draco</span><span class="logo-zona">Zona</span><span class="cursor">_</span></a></h1>
+            <nav class="nav">
+                <a href="index.html">Blog</a>
+                <a href="about.html">About</a>
+                <a href="cv.html">CV</a>
+                <a href="certifications.html">Certifications</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <div class="error-404">
+                <div class="error-content">
+                    <h1 class="error-code">404</h1>
+                    <h2 class="error-title">ACCESS DENIED</h2>
+                    <p class="error-message">The page you're looking for has been compromised or doesn't exist in our database.</p>
+                    
+                    <div class="error-details">
+                        <div class="terminal-output">
+                            <div class="terminal-line">
+                                <span class="prompt">root@dracozona:~$</span> 
+                                <span class="command">find /var/www -name "requested_page"</span>
+                            </div>
+                            <div class="terminal-line error-line">
+                                <span class="error-text">find: '/var/www/requested_page': No such file or directory</span>
+                            </div>
+                            <div class="terminal-line">
+                                <span class="prompt">root@dracozona:~$</span> 
+                                <span class="command">ls -la /var/www/</span>
+                            </div>
+                            <div class="terminal-line">
+                                <span class="file-list">drwxr-xr-x 2 root root 4096 Jan 01 12:00 .</span>
+                            </div>
+                            <div class="terminal-line">
+                                <span class="file-list">drwxr-xr-x 3 root root 4096 Jan 01 12:00 ..</span>
+                            </div>
+                            <div class="terminal-line">
+                                <span class="file-list">-rw-r--r-- 1 root root 2048 Jan 01 12:00 index.html</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="error-actions">
+                        <a href="index.html" class="btn-primary">Return to Base</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Tender Juicy Hatdog <span class="heart">🌭</span> Hacking is not a crime.</p>
+        </div>
+    </footer>
+
+    <canvas id="matrixCanvas"></canvas>
+    <script src="js/matrix.js"></script>
+</body>
+</html>

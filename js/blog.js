@@ -1,6 +1,8 @@
 // Blog data and functionality
 let allPosts = [];
 let filteredPosts = [];
+let currentPage = 1;
+const postsPerPage = 12;
 
 // Initialize the blog
 document.addEventListener('DOMContentLoaded', function() {
@@ -41,6 +43,94 @@ const fallbackPosts = [
         "category": "Web Security",
         "tags": ["web-security"],
         "excerpt": "Explore advanced SQL injection techniques including blind SQLi, time-based attacks, and modern bypass methods for web application security testing."
+    },
+    {
+        "title": "Windows Privilege Escalation Guide",
+        "slug": "windows-privilege-escalation-guide",
+        "date": "2024-01-15",
+        "category": "Privilege Escalation",
+        "tags": ["windows", "privesc"],
+        "excerpt": "Complete guide to Windows privilege escalation techniques and tools for penetration testers."
+    },
+    {
+        "title": "Linux Enumeration Techniques",
+        "slug": "linux-enumeration-techniques",
+        "date": "2024-01-12",
+        "category": "Enumeration",
+        "tags": ["linux", "enumeration"],
+        "excerpt": "Essential Linux enumeration techniques for post-exploitation and privilege escalation."
+    },
+    {
+        "title": "Web Application Fuzzing with Burp Suite",
+        "slug": "web-application-fuzzing-burp-suite",
+        "date": "2024-01-10",
+        "category": "Web Security",
+        "tags": ["burp-suite", "fuzzing"],
+        "excerpt": "Learn how to effectively fuzz web applications using Burp Suite's Intruder module."
+    },
+    {
+        "title": "Metasploit Framework Essentials",
+        "slug": "metasploit-framework-essentials",
+        "date": "2024-01-08",
+        "category": "Exploitation",
+        "tags": ["metasploit", "exploitation"],
+        "excerpt": "Master the Metasploit Framework for penetration testing and exploit development."
+    },
+    {
+        "title": "OSINT Gathering Techniques",
+        "slug": "osint-gathering-techniques",
+        "date": "2024-01-05",
+        "category": "OSINT",
+        "tags": ["osint", "reconnaissance"],
+        "excerpt": "Open Source Intelligence gathering techniques for ethical hackers and security researchers."
+    },
+    {
+        "title": "Docker Container Security",
+        "slug": "docker-container-security",
+        "date": "2024-01-03",
+        "category": "Container Security",
+        "tags": ["docker", "containers"],
+        "excerpt": "Security best practices and common vulnerabilities in Docker containers."
+    },
+    {
+        "title": "Wireless Network Penetration Testing",
+        "slug": "wireless-network-penetration-testing",
+        "date": "2024-01-01",
+        "category": "Wireless Security",
+        "tags": ["wifi", "wireless"],
+        "excerpt": "Complete guide to wireless network security testing and WPA/WPA2 attacks."
+    },
+    {
+        "title": "Social Engineering Attack Vectors",
+        "slug": "social-engineering-attack-vectors",
+        "date": "2023-12-28",
+        "category": "Social Engineering",
+        "tags": ["social-engineering", "phishing"],
+        "excerpt": "Understanding and defending against social engineering attacks in cybersecurity."
+    },
+    {
+        "title": "Cryptography Fundamentals for Hackers",
+        "slug": "cryptography-fundamentals-hackers",
+        "date": "2023-12-25",
+        "category": "Cryptography",
+        "tags": ["crypto", "encryption"],
+        "excerpt": "Essential cryptography concepts every ethical hacker should understand."
+    },
+    {
+        "title": "Mobile Application Security Testing",
+        "slug": "mobile-application-security-testing",
+        "date": "2023-12-22",
+        "category": "Mobile Security",
+        "tags": ["mobile", "android", "ios"],
+        "excerpt": "Comprehensive guide to mobile application security testing for Android and iOS."
+    },
+    {
+        "title": "Cloud Security Assessment",
+        "slug": "cloud-security-assessment",
+        "date": "2023-12-20",
+        "category": "Cloud Security",
+        "tags": ["cloud", "aws", "azure"],
+        "excerpt": "Security assessment techniques for cloud infrastructure and services."
     }
 ];
 
@@ -62,7 +152,7 @@ async function loadPosts() {
     populateFilters();
 }
 
-// Display posts in the container
+// Display posts in the container with pagination
 function displayPosts(posts) {
     const container = document.getElementById('postsContainer');
     
@@ -71,7 +161,11 @@ function displayPosts(posts) {
         return;
     }
     
-    container.innerHTML = posts.map(post => `
+    const startIndex = (currentPage - 1) * postsPerPage;
+    const endIndex = startIndex + postsPerPage;
+    const paginatedPosts = posts.slice(startIndex, endIndex);
+    
+    container.innerHTML = paginatedPosts.map(post => `
         <article class="post-card">
             <div class="post-meta">
                 <span class="post-date">${formatDate(post.date)}</span>
@@ -87,6 +181,8 @@ function displayPosts(posts) {
             <a href="posts/${post.slug}.html" class="read-more">READ MORE >></a>
         </article>
     `).join('');
+    
+    displayPagination(posts.length);
 }
 
 // Format date for display
@@ -145,12 +241,45 @@ function searchPosts() {
         filteredPosts = allPosts.filter(post =>
             post.title.toLowerCase().includes(searchTerm) ||
             post.excerpt.toLowerCase().includes(searchTerm) ||
-            post.content.toLowerCase().includes(searchTerm) ||
+            (post.content && post.content.toLowerCase().includes(searchTerm)) ||
             post.tags.some(tag => tag.toLowerCase().includes(searchTerm))
         );
     }
     
-    applyFilters();
+    currentPage = 1;
+    displayPosts(filteredPosts);
+}
+
+// Display pagination
+function displayPagination(totalPosts) {
+    const totalPages = Math.ceil(totalPosts / postsPerPage);
+    const container = document.getElementById('postsContainer');
+    
+    // Remove existing pagination
+    const existingPagination = document.querySelector('.pagination');
+    if (existingPagination) {
+        existingPagination.remove();
+    }
+    
+    if (totalPages <= 1) return;
+    
+    const paginationHtml = `
+        <div class="pagination">
+            ${currentPage > 1 ? `<button onclick="changePage(${currentPage - 1})" class="page-btn">← Previous</button>` : ''}
+            ${Array.from({length: totalPages}, (_, i) => i + 1).map(page => 
+                `<button onclick="changePage(${page})" class="page-btn ${page === currentPage ? 'active' : ''}">${page}</button>`
+            ).join('')}
+            ${currentPage < totalPages ? `<button onclick="changePage(${currentPage + 1})" class="page-btn">Next →</button>` : ''}
+        </div>
+    `;
+    
+    container.insertAdjacentHTML('afterend', paginationHtml);
+}
+
+// Change page
+function changePage(page) {
+    currentPage = page;
+    displayPosts(filteredPosts);
 }
 
 // Filter by category from sidebar
