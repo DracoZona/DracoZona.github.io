@@ -18,6 +18,7 @@ This machine was labeled "Easy" level, but to be honest it did not feel easy. I 
  password: KxEPkKe6R8su
 
 # Recon and Enum Phase
+
 The usual. I ran an nmap scan:
 
 ```

@@ -3,7 +3,7 @@ title: "Active Directory Series - Machine 1"
 date: "2025-03-30"
 category: "Active Directory"
 tags: ["AD", "HTB", "Offensive Security"]
-excerpt: "First machine in the Active Directory Exploitation tracks in HackTheBox."
+excerpt: "First machine in the Active Directory Exploitation tracks in HackTheBox. This is a chill machine, but full of new learnings."
 ---
 
 # Introduction

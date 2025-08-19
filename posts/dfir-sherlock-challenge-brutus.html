@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DFIR Sherlock Challenge - Brutus - DZ Blog</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/post.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo"><a href="../index.html"><span class="logo-draco">Draco</span><span class="logo-zona">Zona</span><span class="cursor">_</span></a></h1>
+            <nav class="nav">
+                <a href="../index.html">Blog</a>
+                <a href="../about.html">About</a>
+                <a href="../cv.html">CV</a>
+                <a href="../certifications.html">Certifications</a>
+                <a href="../contact.html">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <article class="post">
+                <div class="back-to-blog">
+                    <a href="../index.html" class="back-btn">← Back to Blog</a>
+                </div>
+                
+                <header class="post-header">
+                    <div class="post-meta">
+                        <span class="post-date">April 3, 2025</span>
+                        <span class="post-category">DFIR</span>
+                    </div>
+                    <h1 class="post-title">DFIR Sherlock Challenge - Brutus</h1>
+                    <div class="post-tags">
+                        <span class="tag">DFIR</span><span class="tag">HTB</span><span class="tag">Defensive Security</span>
+                    </div>
+                </header>
+
+                <div class="post-content">
+                    <p><h1>Introduction</h1></p><p>This is a DFIR challenge from HTB Sherlock. It's a very easy challenge, nothing fancy and crazy stuff. In this challenge, I dealth with two files that were given: the <code>auth.log</code> and <code>wtmp</code> file. </p><p><div class="prompt-info"><strong>wtmp</strong> is a system log file in Unix and Linux that records all login and logout events, including system startups and shutdowns.</div></p><p><div class="prompt-info"><strong>auth.log</strong> is a system log in Unix/Linux that records authentication-related events, such as successful and failed login attemtps, SSH access, sudo commands, and other security-related activities. It is also used for monitoring authentication events and detecting suspicious activity. </div></p><p><table class="markdown-table"><thead><tr><th></th><th>auth.log</th><th>wtmp</th></tr></thead><tbody><tr><td>Purpose</td><td>Tracks authentication-related events.</td><td>Logs user logins, logouts, and system reboots.</td></tr><tr><td>Data Format</td><td>Plain text</td><td>Binary</td></tr><tr><td>Recorded Events</td><td>Login attempts (success & failure),<br> SSH access, sudo usage user <br> switching, authentication failures</td><td>Successful logins, session durations, system  <br> reboots, and shutdowns</td></tr><tr><td>Usage</td><td>Security monitoring, detecting bruteforce <br> attacks, privilege escalation tracking</td><td>User session tracking, forensic analysis of login <br> history</td></tr></tbody></table></p><p>#### Sherlock Scenario:</p><p>> In this very easy Sherlock, you will familiarize yourself with Unix auth.log and wtmp logs. We'll explore a scenario where a Confluence server was brute-forced via its SSH service. After gaining access to the server, the attacker performed additional activities, which we can track using auth.log. Although auth.log is primarily used for brute-force analysis, we will delve into the full potential of this artifact in our investigation, including aspects of privilege escalation, persistence, and even some visibility into command execution.<br>{: .prompt-tip }</p><p><h1>Challenge</h1></p><p>So, the first goal in this challenge was to analyze the <code>auth.log</code> file and to determine the IP address used by the attacker to perform the brute force attack.</p><p>I opened the <code>auth.log</code> file and as I expected, there were a lot of lines.</p><p><img src="../images//sherlock-brutus/ss2.png" alt="Desktop View" class="post-image"></p><p><br><img src="../images/sherlock-brutus/ss3.png" alt="Desktop View" class="post-image"></p><p><br>Reading the <code>auth.log</code> file, I have noticed that there were a lot of <code>Failed password for invalid_user server_adm from</code> lines which gave the idea wherein there was a bruteforce attack performed. Along with this line was the IP of the attacker. At this point, I already achieved the 1st task which was to determine the IP adderss of the attacker.</p><p>It was indicated in the challenge that the bruteforce attack was successful and that the attacker was able to gain access to an account on the server. The next goal was to determine which account was compromised. </p><p>So using the <code>auth.log</code> file, I used grep to check for the keywords where there was a successful login. </p><p><img src="../images//sherlock-brutus/ss4.png" alt="Desktop View" class="post-image"></p><p><br>Found it! So it was time for the next task. The next goal was to identify the timestamp when the attacker logged in manually to the server. Since the wtmp is a binary file, I can't just use <code>cat</code> or <code>strings</code> command to open it. I used a tool called <code>utmpdump</code> to be able to read the contents of the <code>wtmp</code> file. After which, I was able to cross reference the IP used by the attacker to the user that he was able to logged in. In this case, it was an easy look. (Well coz the challenge is very easy. It won't be like this if it was an insane one. Probably. Hahah).</p><p><img src="../images//sherlock-brutus/ss5.png" alt="Desktop View" class="post-image"></p><p>The next goal was to determine the session number assigned to the attacker for the user account from the one compromised from the bruteforce attack. So I went back to <code>auth.log</code> file to filter the session numbers and I got it. </p><p>This was the one.<br><img src="../images//sherlock-brutus/ss6.png" alt="Desktop View" class="post-image"></p><p>During the time the attacker was logged in as the compromised user, the attacker added a new user as part of their persistence strategy on the server and assigned it with higher privileges. The next goal was to determine which user was this. So I went back to the <code>auth.log</code> file again and filtered <code>new user</code>.</p><p><img src="../images//sherlock-brutus/ss7.png" alt="Desktop View" class="post-image"></p><p>The next goal was to determine when did the attacker's first SSH session end. So I opened <code>wtmp</code> file again and checked the sequence where the IP attacker logged in and ended. That way I got the timestamp where the SSH session ended.</p><p><img src="../images//sherlock-brutus/ss8.png" alt="Desktop View" class="post-image"></p><p>The final goal was to determine what is the full command the attacker executed using sudo. In this case the attacker logged in to the user account that he created and executed the command. So I went back to <code>auth.log</code> file and filtered the <code>COMMAND</code> keyword.</p><p><img src="../images//sherlock-brutus/ss9.png" alt="Desktop View" class="post-image"></p><p><h1>Conclusion</h1></p><p>That's it for the challenge. It was a fun DFIR challenge.</p>
+                </div>
+
+                <footer class="post-footer">
+                    <div class="post-navigation">
+                        <a href="../index.html" class="nav-link">← Back to Blog</a>
+                    </div>
+                </footer>
+            </article>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Tender Juicy Hatdog <span class="heart">🌭</span> Hacking is not a crime.</p>
+        </div>
+    </footer>
+
+    <canvas id="matrixCanvas"></canvas>
+    <script src="../js/matrix.js"></script>
+</body>
+</html>
