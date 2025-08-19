@@ -1,4 +1,4 @@
-# DZ Blog - Hacker's Den
+# DZ Blog - Dragon's Den
 
 A static blog generator with hackerish theme featuring violet/purple, pink, and black color scheme.
 
