@@ -227,6 +227,29 @@ function buildBlog() {
     // Write posts.json
     fs.writeFileSync(path.join(dataDir, 'posts.json'), JSON.stringify(posts, null, 2));
     
+    // Update fallback posts in blog.js
+    const blogJsPath = 'js/blog.js';
+    if (fs.existsSync(blogJsPath)) {
+        let blogJsContent = fs.readFileSync(blogJsPath, 'utf8');
+        const fallbackData = posts.map(post => ({
+            title: post.title,
+            slug: post.slug,
+            date: post.date,
+            category: post.category,
+            tags: post.tags,
+            excerpt: post.excerpt
+        }));
+        
+        const fallbackString = JSON.stringify(fallbackData, null, 4).replace(/^/gm, '    ');
+        blogJsContent = blogJsContent.replace(
+            /const fallbackPosts = \[[\s\S]*?\];/,
+            `const fallbackPosts = ${fallbackString};`
+        );
+        
+        fs.writeFileSync(blogJsPath, blogJsContent);
+        console.log('Updated fallback posts in blog.js');
+    }
+    
     console.log(`Built ${posts.length} posts successfully!`);
 }
 

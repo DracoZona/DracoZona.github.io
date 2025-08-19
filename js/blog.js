@@ -11,24 +11,44 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Fallback posts data
-const fallbackPosts = [
-    {
-        "title": "Active Directory Series - Machine 2",
-        "slug": "active-directory-series-2",
-        "date": "2025-04-02",
-        "category": "Active Directory",
-        "tags": ["AD", "HTB", "Offensive Security"],
-        "excerpt": "EscapeTwo. Second machine in the Active Directory Exploitation track in HackTheBox. A little bit harder in my perspective, but it was fun."
-    },
-    {
-        "title": "Active Directory Series - Machine 1",
-        "slug": "active-directory-series-1",
-        "date": "2025-03-30",
-        "category": "Active Directory",
-        "tags": ["AD", "HTB", "Offensive Security"],
-        "excerpt": "First machine in the Active Directory Exploitation tracks in HackTheBox."
-    }
-];
+const fallbackPosts =     [
+        {
+            "title": "DFIR Sherlock Challenge - Brutus",
+            "slug": "dfir-sherlock-challenge-brutus",
+            "date": "2025-04-03",
+            "category": "DFIR",
+            "tags": [
+                "DFIR",
+                "HTB",
+                "Defensive Security"
+            ],
+            "excerpt": "Digital Forensics and Incident Response (DFIR) challenge from HTB Sherlocks."
+        },
+        {
+            "title": "Active Directory Series - Machine 2",
+            "slug": "active-directory-series-machine-2",
+            "date": "2025-04-02",
+            "category": "Active Directory",
+            "tags": [
+                "AD",
+                "HTB",
+                "Offensive Security"
+            ],
+            "excerpt": "EscapeTwo. Second machine in the Active Directory Exploitation track in HackTheBox. A little bit harder in my perspective, but it was fun."
+        },
+        {
+            "title": "Active Directory Series - Machine 1",
+            "slug": "active-directory-series-machine-1",
+            "date": "2025-03-30",
+            "category": "Active Directory",
+            "tags": [
+                "AD",
+                "HTB",
+                "Offensive Security"
+            ],
+            "excerpt": "First machine in the Active Directory Exploitation tracks in HackTheBox. This is a chill machine, but full of new learnings."
+        }
+    ];
 
 // Load posts from JSON data
 async function loadPosts() {
