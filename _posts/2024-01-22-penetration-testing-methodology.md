@@ -43,7 +43,7 @@ amass enum -d target.com
 - Banner grabbing
 - Network mapping
 
-![Network Scanning Process](network-scan.png)
+![Network Scanning Process](../images/jannelli.png)
 
 ### 2. Scanning and Enumeration
 
