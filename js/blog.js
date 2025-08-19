@@ -8,22 +8,58 @@ document.addEventListener('DOMContentLoaded', function() {
     setupEventListeners();
 });
 
+// Fallback posts data
+const fallbackPosts = [
+    {
+        "title": "DracoZona",
+        "slug": "dracozona",
+        "date": "2025-08-19",
+        "category": "Your Category",
+        "tags": ["test"],
+        "excerpt": "Your excerpt here"
+    },
+    {
+        "title": "Penetration Testing Methodology with Visual Guide",
+        "slug": "penetration-testing-methodology-with-visual-guide",
+        "date": "2024-01-22",
+        "category": "Penetration Testing",
+        "tags": ["pentesting", "cybersecurity"],
+        "excerpt": "Complete penetration testing methodology guide with visual diagrams and practical examples for ethical hackers and security professionals."
+    },
+    {
+        "title": "Advanced Buffer Overflow Exploitation",
+        "slug": "advanced-buffer-overflow-exploitation",
+        "date": "2024-01-20",
+        "category": "Binary Exploitation",
+        "tags": ["Binary Exploitation"],
+        "excerpt": "Deep dive into advanced buffer overflow techniques including ROP chains, ASLR bypass, and modern exploitation methods."
+    },
+    {
+        "title": "Advanced SQL Injection Techniques",
+        "slug": "advanced-sql-injection-techniques",
+        "date": "2024-01-18",
+        "category": "Web Security",
+        "tags": ["web-security"],
+        "excerpt": "Explore advanced SQL injection techniques including blind SQLi, time-based attacks, and modern bypass methods for web application security testing."
+    }
+];
+
 // Load posts from JSON data
 async function loadPosts() {
     try {
         const response = await fetch('_data/posts.json');
         allPosts = await response.json();
-        
-        // Sort posts by date (latest first)
-        allPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
-        
-        filteredPosts = [...allPosts];
-        displayPosts(filteredPosts);
-        populateFilters();
     } catch (error) {
-        console.error('Error loading posts:', error);
-        displayError();
+        console.error('Error loading posts.json, using fallback data:', error);
+        allPosts = fallbackPosts;
     }
+    
+    // Sort posts by date (latest first)
+    allPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
+    
+    filteredPosts = [...allPosts];
+    displayPosts(filteredPosts);
+    populateFilters();
 }
 
 // Display posts in the container
