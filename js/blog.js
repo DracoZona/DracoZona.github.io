@@ -13,124 +13,20 @@ document.addEventListener('DOMContentLoaded', function() {
 // Fallback posts data
 const fallbackPosts = [
     {
-        "title": "DracoZona",
-        "slug": "dracozona",
-        "date": "2025-08-19",
-        "category": "Your Category",
-        "tags": ["test"],
-        "excerpt": "Your excerpt here"
+        "title": "Active Directory Series - Machine 2",
+        "slug": "active-directory-series-2",
+        "date": "2025-04-02",
+        "category": "Active Directory",
+        "tags": ["AD", "HTB", "Offensive Security"],
+        "excerpt": "EscapeTwo. Second machine in the Active Directory Exploitation track in HackTheBox. A little bit harder in my perspective, but it was fun."
     },
     {
-        "title": "Penetration Testing Methodology with Visual Guide",
-        "slug": "penetration-testing-methodology-with-visual-guide",
-        "date": "2024-01-22",
-        "category": "Penetration Testing",
-        "tags": ["pentesting", "cybersecurity"],
-        "excerpt": "Complete penetration testing methodology guide with visual diagrams and practical examples for ethical hackers and security professionals."
-    },
-    {
-        "title": "Advanced Buffer Overflow Exploitation",
-        "slug": "advanced-buffer-overflow-exploitation",
-        "date": "2024-01-20",
-        "category": "Binary Exploitation",
-        "tags": ["Binary Exploitation"],
-        "excerpt": "Deep dive into advanced buffer overflow techniques including ROP chains, ASLR bypass, and modern exploitation methods."
-    },
-    {
-        "title": "Advanced SQL Injection Techniques",
-        "slug": "advanced-sql-injection-techniques",
-        "date": "2024-01-18",
-        "category": "Web Security",
-        "tags": ["web-security"],
-        "excerpt": "Explore advanced SQL injection techniques including blind SQLi, time-based attacks, and modern bypass methods for web application security testing."
-    },
-    {
-        "title": "Windows Privilege Escalation Guide",
-        "slug": "windows-privilege-escalation-guide",
-        "date": "2024-01-15",
-        "category": "Privilege Escalation",
-        "tags": ["windows", "privesc"],
-        "excerpt": "Complete guide to Windows privilege escalation techniques and tools for penetration testers."
-    },
-    {
-        "title": "Linux Enumeration Techniques",
-        "slug": "linux-enumeration-techniques",
-        "date": "2024-01-12",
-        "category": "Enumeration",
-        "tags": ["linux", "enumeration"],
-        "excerpt": "Essential Linux enumeration techniques for post-exploitation and privilege escalation."
-    },
-    {
-        "title": "Web Application Fuzzing with Burp Suite",
-        "slug": "web-application-fuzzing-burp-suite",
-        "date": "2024-01-10",
-        "category": "Web Security",
-        "tags": ["burp-suite", "fuzzing"],
-        "excerpt": "Learn how to effectively fuzz web applications using Burp Suite's Intruder module."
-    },
-    {
-        "title": "Metasploit Framework Essentials",
-        "slug": "metasploit-framework-essentials",
-        "date": "2024-01-08",
-        "category": "Exploitation",
-        "tags": ["metasploit", "exploitation"],
-        "excerpt": "Master the Metasploit Framework for penetration testing and exploit development."
-    },
-    {
-        "title": "OSINT Gathering Techniques",
-        "slug": "osint-gathering-techniques",
-        "date": "2024-01-05",
-        "category": "OSINT",
-        "tags": ["osint", "reconnaissance"],
-        "excerpt": "Open Source Intelligence gathering techniques for ethical hackers and security researchers."
-    },
-    {
-        "title": "Docker Container Security",
-        "slug": "docker-container-security",
-        "date": "2024-01-03",
-        "category": "Container Security",
-        "tags": ["docker", "containers"],
-        "excerpt": "Security best practices and common vulnerabilities in Docker containers."
-    },
-    {
-        "title": "Wireless Network Penetration Testing",
-        "slug": "wireless-network-penetration-testing",
-        "date": "2024-01-01",
-        "category": "Wireless Security",
-        "tags": ["wifi", "wireless"],
-        "excerpt": "Complete guide to wireless network security testing and WPA/WPA2 attacks."
-    },
-    {
-        "title": "Social Engineering Attack Vectors",
-        "slug": "social-engineering-attack-vectors",
-        "date": "2023-12-28",
-        "category": "Social Engineering",
-        "tags": ["social-engineering", "phishing"],
-        "excerpt": "Understanding and defending against social engineering attacks in cybersecurity."
-    },
-    {
-        "title": "Cryptography Fundamentals for Hackers",
-        "slug": "cryptography-fundamentals-hackers",
-        "date": "2023-12-25",
-        "category": "Cryptography",
-        "tags": ["crypto", "encryption"],
-        "excerpt": "Essential cryptography concepts every ethical hacker should understand."
-    },
-    {
-        "title": "Mobile Application Security Testing",
-        "slug": "mobile-application-security-testing",
-        "date": "2023-12-22",
-        "category": "Mobile Security",
-        "tags": ["mobile", "android", "ios"],
-        "excerpt": "Comprehensive guide to mobile application security testing for Android and iOS."
-    },
-    {
-        "title": "Cloud Security Assessment",
-        "slug": "cloud-security-assessment",
-        "date": "2023-12-20",
-        "category": "Cloud Security",
-        "tags": ["cloud", "aws", "azure"],
-        "excerpt": "Security assessment techniques for cloud infrastructure and services."
+        "title": "Active Directory Series - Machine 1",
+        "slug": "active-directory-series-1",
+        "date": "2025-03-30",
+        "category": "Active Directory",
+        "tags": ["AD", "HTB", "Offensive Security"],
+        "excerpt": "First machine in the Active Directory Exploitation tracks in HackTheBox."
     }
 ];
 
