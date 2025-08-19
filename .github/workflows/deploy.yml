@@ -1,4 +1,4 @@
-name: Build and Deploy Blog
+name: Deploy Static Site
 
 on:
   push:
@@ -10,21 +10,13 @@ permissions:
   id-token: write
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
     
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-    
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-    
-    - name: Build blog
-      run: node build.js
-    
+      
     - name: Setup Pages
       uses: actions/configure-pages@v3
       

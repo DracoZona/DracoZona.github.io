@@ -1,4 +1,4 @@
-# DZ Blog - Dragon's Den
+# DZ Blog - Hacker's Den
 
 A static blog generator with hackerish theme featuring violet/purple, pink, and black color scheme.
 
@@ -46,23 +46,34 @@ excerpt: "Brief description of your post..."
 Write your post content in **Markdown**.
 ```
 
-3. Commit and push to GitHub
-4. GitHub Actions will automatically build and deploy
+3. Build locally: `node build.js`
+4. Commit and push all files to GitHub
+5. GitHub Pages will automatically deploy the static files
 
 ## Local Development
 
 ```bash
 # Build the blog locally
-npm run build
+node build.js
 
 # This generates:
 # - HTML files in posts/
 # - Updated posts.json in _data/
 ```
 
-## Deployment
+## Deployment Workflow
 
-The blog auto-deploys to GitHub Pages when you push to the main branch. Enable GitHub Pages in your repository settings.
+1. **Write posts** in `_posts/` folder
+2. **Build locally**: `node build.js`
+3. **Commit all files**: `git add . && git commit -m "Add new post"`
+4. **Push to GitHub**: `git push origin main`
+5. **Auto-deploy**: GitHub Pages deploys the static files
+
+## GitHub Pages Setup
+
+1. Go to repository **Settings** → **Pages**
+2. **Source**: Deploy from a branch → **GitHub Actions**
+3. The workflow will automatically deploy on push
 
 ## Customization
 
