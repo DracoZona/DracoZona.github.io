@@ -3,19 +3,34 @@ const path = require('path');
 
 // Markdown to HTML converter
 function convertMarkdownToHtml(markdown) {
-    return markdown
-        .replace(/!\[([^\]]*)\]\(([^\)]+)\)/g, '<img src="../images/$2" alt="$1" class="post-image">')
-        .replace(/^### (.*$)/gm, '<h3>$1</h3>')
-        .replace(/^## (.*$)/gm, '<h2>$1</h2>')
-        .replace(/^# (.*$)/gm, '<h1>$1</h1>')
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\*(.*?)\*/g, '<em>$1</em>')
-        .replace(/`(.*?)`/g, '<code>$1</code>')
-        .replace(/```([\s\S]*?)```/g, '<div class="code-block"><pre><code>$1</code></pre></div>')
-        .replace(/\n\n/g, '</p><p>')
-        .replace(/\n/g, '<br>')
-        .replace(/^/, '<p>')
-        .replace(/$/, '</p>');
+    let html = markdown;
+    
+    // Handle prompt boxes first
+    html = html.replace(/> \*\*([^\*]+)\*\* ([^\n]+)\n\{: \.prompt-(info|warning|danger|success|tip) \}/g, '<div class="prompt-$3"><strong>$1</strong> $2</div>');
+    
+    // Handle code blocks
+    html = html.replace(/```([\s\S]*?)```/g, '<div class="code-block"><pre><code>$1</code></pre></div>');
+    
+    // Handle images
+    html = html.replace(/!\[([^\]]*)\]\(([^\)]+)\)/g, '<img src="../images/$2" alt="$1" class="post-image">');
+    
+    // Handle headers
+    html = html.replace(/^### (.*$)/gm, '<h3>$1</h3>');
+    html = html.replace(/^## (.*$)/gm, '<h2>$1</h2>');
+    html = html.replace(/^# (.*$)/gm, '<h1>$1</h1>');
+    
+    // Handle text formatting
+    html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
+    html = html.replace(/`(.*?)`/g, '<code>$1</code>');
+    
+    // Handle paragraphs and line breaks
+    html = html.replace(/\n\n/g, '</p><p>');
+    html = html.replace(/\n/g, '<br>');
+    html = html.replace(/^/, '<p>');
+    html = html.replace(/$/, '</p>');
+    
+    return html;
 }
 
 // Parse frontmatter

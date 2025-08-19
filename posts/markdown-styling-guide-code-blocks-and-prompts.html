@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Styling Guide - Code Blocks and Prompts - DZ Blog</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/post.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo"><a href="../index.html"><span class="logo-draco">Draco</span><span class="logo-zona">Zona</span><span class="cursor">_</span></a></h1>
+            <nav class="nav">
+                <a href="../index.html">Blog</a>
+                <a href="../about.html">About</a>
+                <a href="../cv.html">CV</a>
+                <a href="../certifications.html">Certifications</a>
+                <a href="../contact.html">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <article class="post">
+                <div class="back-to-blog">
+                    <a href="../index.html" class="back-btn">← Back to Blog</a>
+                </div>
+                
+                <header class="post-header">
+                    <div class="post-meta">
+                        <span class="post-date">January 25, 2024</span>
+                        <span class="post-category">Documentation</span>
+                    </div>
+                    <h1 class="post-title">Markdown Styling Guide - Code Blocks and Prompts</h1>
+                    <div class="post-tags">
+                        <span class="tag">markdown</span><span class="tag">styling</span><span class="tag">guide</span>
+                    </div>
+                </header>
+
+                <div class="post-content">
+                    <p><h1>Markdown Styling Guide</h1></p><p>This guide demonstrates how to use the enhanced code blocks and prompt boxes in your blog posts.</p><p><h2>Code Blocks</h2></p><p>Use triple backticks with language specification for syntax highlighting:</p><p><div class="code-block"><pre><code>bash<br>nmap -sS -sV -sC -O target.com<br></code></pre></div></p><p><div class="code-block"><pre><code>python<br>def exploit_buffer_overflow():<br>    payload = "A" * 140<br>    payload += struct.pack("<I", 0x08048484)<br>    return payload<br></code></pre></div></p><p><div class="code-block"><pre><code>powershell<br>Get-ADUser -Filter <em> -Properties </em> | Select-Object Name, SamAccountName<br></code></pre></div></p><p><div class="code-block"><pre><code>sql<br>SELECT * FROM users WHERE id = 1 UNION SELECT username, password FROM admin_users--<br></code></pre></div></p><p><h2>Prompt Boxes</h2></p><p><h3>Info Prompt (Blue)</h3><br><div class="prompt-info"><strong>Nmap</strong> is a network discovery and security auditing tool used for network exploration and security scanning.</div></p><p><h3>Warning Prompt (Yellow)</h3><br><div class="prompt-warning"><strong>Always get proper authorization</strong> before conducting any penetration testing activities on systems you don't own.</div></p><p><h3>Danger Prompt (Red)</h3><br><div class="prompt-danger"><strong>SeDebugPrivilege</strong> allows a process to debug other processes, potentially leading to full system compromise if exploited.</div></p><p><h3>Success Prompt (Green)</h3><br><div class="prompt-success"><strong>Successfully compromised</strong> the target system and obtained administrator privileges!</div></p><p><h3>Tip Prompt (Purple)</h3><br><div class="prompt-tip"><strong>Pro tip:</strong> Always document your methodology and findings during penetration testing for better reporting.</div></p><p><h2>Combined Example</h2></p><p>Here's a practical example combining both features:</p><p><div class="code-block"><pre><code>bash<br><h1>Initial reconnaissance</h1><br>nmap -sS -sV -p- target.com<br></code></pre></div></p><p><div class="prompt-tip"><strong>Remember</strong> to always start with passive reconnaissance before moving to active scanning techniques.</div></p><p><div class="code-block"><pre><code>bash<br><h1>SMB enumeration</h1><br>smbclient -L //target.com -N<br>enum4linux -a target.com<br></code></pre></div></p><p><div class="prompt-info"><strong>SMB null sessions</strong> can sometimes provide valuable information about users and shares without authentication.</div></p><p><div class="prompt-warning"><strong>Be careful</strong> when using aggressive scanning techniques as they may trigger security alerts.</div></p><p><h2>Exploitation Phase</h2></p><p><div class="code-block"><pre><code>python<br>import socket<br>import struct</p><p>def create_payload():<br>    # Buffer overflow payload<br>    buffer = "A" * 146<br>    eip = struct.pack("<I", 0x625011af)  # JMP ESP<br>    nops = "\x90" * 16<br>    shellcode = "\xfc\x48\x83\xe4\xf0..."  # msfvenom payload<br>    <br>    return buffer + eip + nops + shellcode<br></code></pre></div></p><p><div class="prompt-danger"><strong>Always test your exploits</strong> in a controlled environment before using them in real assessments.</div></p><p><div class="code-block"><pre><code>bash<br><h1>Execute the exploit</h1><br>python exploit.py target_ip target_port<br></code></pre></div></p><p><div class="prompt-success"><strong>Exploitation successful!</strong> Remember to document all steps taken for your penetration testing report.</div></p><p><h2>Conclusion</h2></p><p>These styling features help make your blog posts more readable and informative. Use them to highlight important information and make your code examples stand out.</p><p><em>Happy blogging and stay ethical!</em></p>
+                </div>
+
+                <footer class="post-footer">
+                    <div class="post-navigation">
+                        <a href="../index.html" class="nav-link">← Back to Blog</a>
+                    </div>
+                </footer>
+            </article>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Tender Juicy Hatdog <span class="heart">🌭</span> Hacking is not a crime.</p>
+        </div>
+    </footer>
+
+    <canvas id="matrixCanvas"></canvas>
+    <script src="../js/matrix.js"></script>
+</body>
+</html>

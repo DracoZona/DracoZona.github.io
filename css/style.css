@@ -488,3 +488,89 @@ body {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+/* Enhanced Code blocks */
+.code-block {
+    position: relative;
+    margin: 20px 0;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--primary-purple);
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
+}
+
+.code-block::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: linear-gradient(90deg, #8b5cf6, #ec4899, #06b6d4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.code-block pre {
+    background: #0d1117;
+    color: #c9d1d9;
+    padding: 50px 20px 20px;
+    margin: 0;
+    border-radius: 0;
+    border: none;
+    overflow-x: auto;
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.code-block pre code {
+    background: none;
+    color: inherit;
+    padding: 0;
+    border-radius: 0;
+}
+
+/* Prompt boxes */
+.prompt-info, .prompt-warning, .prompt-danger, .prompt-success, .prompt-tip {
+    margin: 20px 0;
+    padding: 15px 20px;
+    border-radius: 8px;
+    border-left: 4px solid;
+    position: relative;
+    font-family: inherit;
+}
+
+.prompt-info {
+    background: rgba(59, 130, 246, 0.1);
+    border-left-color: #3b82f6;
+    color: #93c5fd;
+}
+
+.prompt-warning {
+    background: rgba(245, 158, 11, 0.1);
+    border-left-color: #f59e0b;
+    color: #fbbf24;
+}
+
+.prompt-danger {
+    background: rgba(239, 68, 68, 0.1);
+    border-left-color: #ef4444;
+    color: #fca5a5;
+}
+
+.prompt-success {
+    background: rgba(34, 197, 94, 0.1);
+    border-left-color: #22c55e;
+    color: #86efac;
+}
+
+.prompt-tip {
+    background: rgba(139, 92, 246, 0.1);
+    border-left-color: var(--primary-purple);
+    color: var(--pink);
+}
+
+.prompt-info::before { content: "ℹ️ Info: "; font-weight: bold; }
+.prompt-warning::before { content: "⚠️ Warning: "; font-weight: bold; }
+.prompt-danger::before { content: "🚨 Danger: "; font-weight: bold; }
+.prompt-success::before { content: "✅ Success: "; font-weight: bold; }
+.prompt-tip::before { content: "💡 Tip: "; font-weight: bold; }
