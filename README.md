@@ -1,6 +1,6 @@
-# DZ Blog - Hacker's Den
+# DZ Blogger Profile- Hacker's Den
 
-A static blog generator with hackerish theme featuring violet/purple, pink, and black color scheme.
+A static blog generator with hackerish theme featuring violet/purple, pink, and black color scheme created by DracoZona. I created this to automate my blog written using markdown language. It is like jekyll, but I did use ruby.
 
 ## Features
 
