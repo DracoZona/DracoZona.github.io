@@ -36,8 +36,6 @@ So, the first goal in this challenge was to analyze the `auth.log` file and to d
 I opened the `auth.log` file and as I expected, there were a lot of lines.
 
 ![Desktop View](/sherlock-brutus/ss2.png)
-
-
 ![Desktop View](sherlock-brutus/ss3.png)
 
 
