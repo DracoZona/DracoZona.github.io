@@ -6,7 +6,9 @@ function convertMarkdownToHtml(markdown) {
     let html = markdown;
     
     // Handle prompt boxes first
-    html = html.replace(/> \*\*([^\*]+)\*\* ([^\n]+)\n\{: \.prompt-(info|warning|danger|success|tip) \}/g, '<div class="prompt-$3"><strong>$1</strong> $2</div>');
+    html = html.replace(/> ([^\n]+)\n\{: \.prompt-(info|warning|danger|success|tip) \}/g, '<div class="prompt-$2">$1</div>');
+    html = html.replace(/> ([^\n]+)\n\{:\s*\.prompt-(info|warning|danger|success|tip)\s*\}/g, '<div class="prompt-$2">$1</div>');
+    html = html.replace(/> ([^\n]+)<br>\{:\s*\.prompt-(info|warning|danger|success|tip)\s*\}/g, '<div class="prompt-$2">$1</div>');
     
     // Handle code blocks
     html = html.replace(/```([\s\S]*?)```/g, '<div class="code-block"><pre><code>$1</code></pre></div>');
@@ -26,7 +28,7 @@ function convertMarkdownToHtml(markdown) {
             const cells = row.split('|').slice(1, -1).map(cell => `<td>${cell.trim()}</td>`).join('');
             return `<tr>${cells}</tr>`;
         }).join('');
-        return `<table class="markdown-table"><thead><tr>${headerCells}</tr></thead><tbody>${bodyRows}</tbody></table>`;
+        return `<div class="table-container"><table class="markdown-table"><thead><tr>${headerCells}</tr></thead><tbody>${bodyRows}</tbody></table></div>`;
     });
     
     // Handle text formatting
@@ -167,6 +169,7 @@ function generatePostHtml(postData) {
     </footer>
 
     <canvas id="matrixCanvas"></canvas>
+    <script src="../js/mobile.js"></script>
     <script src="../js/matrix.js"></script>
 </body>
 </html>`;
