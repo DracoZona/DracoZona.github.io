@@ -120,7 +120,7 @@ function generatePostHtml(postData) {
             <nav class="nav">
                 <a href="../">Blog</a>
                 <a href="../about">About</a>
-                <a href="../cv">CV</a>
+                <a href="../cv-profile">CV</a>
                 <a href="../certifications">Certifications</a>
                 <a href="../contact">Contact</a>
             </nav>
