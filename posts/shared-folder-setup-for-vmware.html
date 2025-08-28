@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shared Folder Setup for VMWare - DZ Blog</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/post.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo"><a href="../index.html"><span class="logo-draco">Draco</span><span class="logo-zona">Zona</span><span class="cursor">_</span></a></h1>
+            <nav class="nav">
+                <a href="../">Blog</a>
+                <a href="../about">About</a>
+                <a href="../cv-profile">CV</a>
+                <a href="../certifications">Certifications</a>
+                <a href="../contact">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <article class="post">
+                <div class="back-to-blog">
+                    <a href="../index.html" class="back-btn">← Back to Blog</a>
+                </div>
+                
+                <header class="post-header">
+                    <div class="post-meta">
+                        <span class="post-date">August 28, 2025</span>
+                        <span class="post-category">My Notes</span>
+                    </div>
+                    <h1 class="post-title">Shared Folder Setup for VMWare</h1>
+                    <div class="post-tags">
+                        <span class="tag">My Notes</span><span class="tag">General</span>
+                    </div>
+                </header>
+
+                <div class="post-content">
+                    <p><h1>Prerequisites</h1></p><p>- Open-vm-tools version is at 10.0.0 or greater<br>- OS supports fuse<br>- Kernel version >= 3.10 (if open-vm-tools < 10.3.0. kernel version must be >= 4.0)<br>- Supports systemd</p><p><h3>Step 1: Create the file /etc/systemd/system/mnt-hgfs.mount</h3></p><p>Content:</p><p><div class="code-block"><pre><code></p><p>[Unit]<br>Description=VMware mount for hgfs<br>DefaultDependencies=no<br>Before=umount.target<br>ConditionVirtualization=vmware<br>After=sys-fs-fuse-connections.mount</p><p>[Mount]<br>What=vmhgfs-fuse<br>Where=/mnt/hgfs<br>Type=fuse<br>Options=default_permissions,allow_other</p><p>[Install]<br>WantedBy=multi-user.target</p><p></code></pre></div></p><p><h3>Step 2: Create the file /etc/modules-load.d/open-vm-tools.conf </h3></p><p>Content:<br><div class="code-block"><pre><code><br>fuse<br></code></pre></div><br><div class="prompt-info">If the file above is already existing, just add the following line at the bottom.</div></p><p><h3>Step 3: Enable the system service</h3></p><p>Command:</p><p><div class="code-block"><pre><code><br>sudo systemctl enable mnt-hgfs.mount<br></code></pre></div></p><p><div class="prompt-info">This will make sure the hgfs fdirectory will be mounted after a reboot.</div></p><p><h3>Step 4: Make sure the 'fuse' module is loaded:</h3></p><p>Command:</p><p><div class="code-block"><pre><code><br>sudo modprobe -v fuse<br></code></pre></div></p><p><h3>Additional step if the shared folder is still not showing in the <code>/mnt</code> folder:</h3></p><p>Command:</p><p><div class="code-block"><pre><code><br>sudo systemctl start mnt-hgfs.mount<br></code></pre></div></p><p>or try </p><p><div class="code-block"><pre><code><br>reboot<br></code></pre></div></p><p>Whatever works. Haha</p><p><h3>Note:</h3></p><p>This is how it worked for me. I don't know if there are other ways or something.</p>
+                </div>
+
+                <footer class="post-footer">
+                    <div class="post-navigation">
+                        <a href="../index.html" class="nav-link">← Back to Blog</a>
+                    </div>
+                </footer>
+            </article>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Tender Juicy Hatdog <span class="heart">🌭</span> Hacking is not a crime.</p>
+        </div>
+    </footer>
+
+    <canvas id="matrixCanvas"></canvas>
+    <script src="../js/mobile.js"></script>
+    <script src="../js/matrix.js"></script>
+</body>
+</html>

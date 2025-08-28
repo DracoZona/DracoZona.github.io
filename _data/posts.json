@@ -1,5 +1,17 @@
 [
   {
+    "title": "Shared Folder Setup for VMWare",
+    "slug": "shared-folder-setup-for-vmware",
+    "date": "2025-08-28",
+    "category": "My Notes",
+    "tags": [
+      "My Notes",
+      "General"
+    ],
+    "excerpt": "Setting up a shared folder for my vmware setup. Made a post for future reference.",
+    "content": "# Prerequisites\n\n- Open-vm-tools version is at 10.0.0 or greater\n- OS supports fuse\n- Kernel version >= 3.10 (if open-vm-tools < 10.3.0. kernel version must be >= 4.0)\n- Supports systemd\n\n### Step 1: Create the file /etc/systemd/system/mnt-hgfs.mount\n\nContent:\n\n```\n\n[Unit]\nDescription=VMware mount for hgfs\nDefaultDependencies=no\nBefore=umount.target\nConditionVirtualization=vmware\nAfter=sys-fs-fuse-connections.mount\n\n[Mount]\nWhat=vmhgfs-fuse\nWhere=/mnt/hgfs\nType=fuse\nOptions=default_permissions,allow_other\n\n[Install]\nWantedBy=multi-user.target\n\n```\n\n### Step 2: Create the file /etc/modules-load.d/open-vm-tools.conf \n\nContent:\n```\nfuse\n```\n> If the file above is already existing, just add the following line at the bottom.\n{: .prompt-info }\n\n### Step 3: Enable the system service\n\nCommand:\n\n```\nsudo systemctl enable mnt-hgfs.mount\n```\n\n> This will make sure the hgfs fdirectory will be mounted after a reboot.\n{: .prompt-info }\n\n### Step 4: Make sure the 'fuse' module is loaded:\n\nCommand:\n\n```\nsudo modprobe -v fuse\n```\n\n### Additional step if the shared folder is still not showing in the `/mnt` folder:\n\nCommand:\n\n```\nsudo systemctl start mnt-hgfs.mount\n```\n\nor try \n\n```\nreboot\n```\n\nWhatever works. Haha\n\n### Note:\n\nThis is how it worked for me. I don't know if there are other ways or something."
+  },
+  {
     "title": "DFIR Sherlock Challenge - Brutus",
     "slug": "dfir-sherlock-challenge-brutus",
     "date": "2025-04-03",
