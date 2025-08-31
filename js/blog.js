@@ -18,11 +18,12 @@ const fallbackPosts =     [
             "date": "2025-08-31",
             "category": "Web Attacks",
             "tags": [
+                "Mass Assignment",
                 "HackTheBox",
-                "Web",
-                "Mass Assignment"
+                "Web"
+                
             ],
-            "excerpt": "Mass assignment vulnerability that leads to LFI. Part 1 writeup of the htb machine called backendtwo."
+            "excerpt": "Mass assignment vulnerability that leads to Local File Read."
         },
         {
             "title": "Shared Folder Setup for VMWare",
