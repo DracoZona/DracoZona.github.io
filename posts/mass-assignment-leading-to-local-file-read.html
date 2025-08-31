@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mass Assignment leading to Local File Read. - DZ Blog</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/post.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo"><a href="../index.html"><span class="logo-draco">Draco</span><span class="logo-zona">Zona</span><span class="cursor">_</span></a></h1>
+            <nav class="nav">
+                <a href="../">Blog</a>
+                <a href="../about">About</a>
+                <a href="../cv-profile">CV</a>
+                <a href="../certifications">Certifications</a>
+                <a href="../contact">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <article class="post">
+                <div class="back-to-blog">
+                    <a href="../index.html" class="back-btn">← Back to Blog</a>
+                </div>
+                
+                <header class="post-header">
+                    <div class="post-meta">
+                        <span class="post-date">August 31, 2025</span>
+                        <span class="post-category">Web Attacks</span>
+                    </div>
+                    <h1 class="post-title">Mass Assignment leading to Local File Read.</h1>
+                    <div class="post-tags">
+                        <span class="tag">Mass Assignment</span><span class="tag">Web</span><span class="tag">HackTheBox</span>
+                    </div>
+                </header>
+
+                <div class="post-content">
+                    <p><h1>Introduction</h1><br>This blog focuses on the Mass Assignment vulnerability which leands to a Local File Read where the contents of the /etc/passwd was displayed. This is just a hackthebox machine called <code>BackendTwo</code>.</p><p><h1>Enumeration</h1><br>Of course, a typical approach to these like this, first I have fired up nmap:</p><p><img src="../images//backendtwo/1.png" alt="Desktop View" class="post-image"></p><p>So we got only 2 ports opened. Since it has port 80, I checked it using my browser.<br><img src="../images//backendtwo/2.png" alt="Desktop View" class="post-image"><br>Seems interesting. I used gobuster to further enumerate any possible endpoints.<br><img src="../images//backendtwo/3.png" alt="Desktop View" class="post-image"><br>Found two endpoints: <code>/docs</code> and <code>/api</code>, but I can't access <code>/docs</code> since I need to be authenticated and I don't have any credentials. <br><img src="../images//backendtwo/4.png" alt="Desktop View" class="post-image"><br>So I checked <code>/api</code> instead and found <code>/v1</code><br><img src="../images//backendtwo/5.png" alt="Desktop View" class="post-image"><br>then I went further and found <code>/user</code> and <code>/admin</code>. <br><img src="../images//backendtwo/6.png" alt="Desktop View" class="post-image"><br>I checked the <code>/admin</code> endpoint. Maybe I am lucky or whatever. But no I was not, the admin endpoint needs to be authenticated. (as expected!)<br><img src="../images//backendtwo/7.png" alt="Desktop View" class="post-image"><br>So I checked the <code>/user</code> endpoint instead. Hmmmm, that seems odd. "Not found".<br><img src="../images//backendtwo/8.png" alt="Desktop View" class="post-image"><br>I tried putting some random username, in this case, <code>administrator</code>. I wanna shoot my luck in the air. Then I got this message.<br><img src="../images//backendtwo/9.png" alt="Desktop View" class="post-image"><br>It seems that it is accepting an integer value. So I tried putting an integer.<br><img src="../images//backendtwo/10.png" alt="Desktop View" class="post-image"><br>Now that's juicy and licious ~juicylicious. <br><img src="../images//backendtwo/11.png" alt="Desktop View" class="post-image"><br>I was curious how many users are there, so I tried shooting a random number ~ 1000, then it returned null. So maybe there's only few hundreds or even less than a hundred users in the system. So I used intruder.<br><img src="../images//backendtwo/12.png" alt="Desktop View" class="post-image"><br>As expected, only few users are there. There are 11.<br><img src="../images//backendtwo/13.png" alt="Desktop View" class="post-image"><br><div class="prompt-info">I used grep-match to check for <code>guid</code> so I could sort the results faster since all results will show status code 200. Hence I needed something to use to determine which is which.</div></p><p>I checked out the last user that has a userid of 11.<br><img src="../images//backendtwo/14.png" alt="Desktop View" class="post-image"></p><p>Well I couldn't do anything much with these since I really do need to login and I don't have any credentials. I fuzzed for further endpoints and I got something:<br><img src="../images//backendtwo/15.png" alt="Desktop View" class="post-image"></p><p>Of course I couldn't go to login since I don't have any credentials, so luckily there is a <code>/signup</code> endpoint. I tried looking into it.<br><img src="../images//backendtwo/16.png" alt="Desktop View" class="post-image"><br>Well, I don't know the parameters that must be used so I put the following to check:</p><p><div class="code-block"><pre><code><br>{<br>    "key":"value"<br>}</p><p></code></pre></div></p><p><img src="../images//backendtwo/17.png" alt="Desktop View" class="post-image"><br>So <code>email</code> and <code>password</code> are needed to signup. There we go, I was able to create a user.<br><img src="../images//backendtwo/18.png" alt="Desktop View" class="post-image"></p><p>Now, it's time to login.<br><img src="../images//backendtwo/19.png" alt="Desktop View" class="post-image"><br>Hmmm. I got an error. At first I wasn't really sure, then I changed the format.<br><img src="../images//backendtwo/20.png" alt="Desktop View" class="post-image"><br>Well, still the same. I added a <code>Content-Type</code> header and we got some access token.<br><img src="../images//backendtwo/21.png" alt="Desktop View" class="post-image"></p><p>I tried to access <code>/docs</code> endpoint without the access token and as expected, it said not authenticated.<br><img src="../images//backendtwo/22.png" alt="Desktop View" class="post-image"></p><p>Then I included the access token in the <code>Authorization</code> header, it went through.<br><img src="../images//backendtwo/23.png" alt="Desktop View" class="post-image"></p><p><div class="prompt-info">At this point I needed to use the access token as I navigate to the page. Hence, I used a browser extension called <code>Simple Modify Headers</code>.</div></p><p><img src="../images//backendtwo/24.png" alt="Desktop View" class="post-image"></p><p>I can now navigate without putting the access token in every request.<br><img src="../images//backendtwo/25.png" alt="Desktop View" class="post-image"></p><p>Upon looking around and tampering some things, the endpoint <code>/api/v1/user/{user_id}/edit</code>  looks <code>tender juicy</code> 🌭. <br><img src="../images//backendtwo/26.png" alt="Desktop View" class="post-image"></p><p>I checked the account that I created which probably has the user_id 12 to check the information on it. So since according to the documentation, only the <code>profile</code> can be edited, but what if we can alter as well even the email? Let's try.<br><img src="../images//backendtwo/27.png" alt="Desktop View" class="post-image"></p><p>So instead of only putting the profile parameter, I included the email and a value not identical to the registered email. Upon sending the request, it displayed <code>result: true</code>. So probably that went through or something.<br><img src="../images//backendtwo/28.png" alt="Desktop View" class="post-image"></p><p>And it was altered. The email was altered instead of just the profile parameter. <br><img src="../images//backendtwo/29.png" alt="Desktop View" class="post-image"></p><p><div class="prompt-info">This vulnerability is called <code>Mass Assignment</code>. This allows the attacker to modify the HTTP request to add new parameters which could create or replace variables in the application code which is originally not intended.</div></p><p>At this point, upon knowing the vulnerability, remember that there is a parameter called <code>is_superuser</code>. This is probably relating to admin privileges. So I sent another request modifying the variable into <code>true</code>. <br><img src="../images//backendtwo/30.png" alt="Desktop View" class="post-image"></p><p>I checked the account that I created and now it's an admin!<br><img src="../images//backendtwo/31.png" alt="Desktop View" class="post-image"></p><p>Since I already have admin privileges, I went to check the admin endpoints if there are anything <code>tender juicy</code>🌭. Then I found this one.<br><img src="../images//backendtwo/32.png" alt="Desktop View" class="post-image"></p><p>So I was thinking maybe we could read files from the server with this. So according to the documentation, the value should be in base64_url. So typical CTF things, I encoded <code>/etc/passwd</code> using base64. <br><img src="../images//backendtwo/33.png" alt="Desktop View" class="post-image"></p><p>That's weird. I got permission error, but I am already an admin. That should have worked. But then I remember my access token is not yet admin. So I needed a new access token for this to work.<br><img src="../images//backendtwo/34.png" alt="Desktop View" class="post-image"></p><p>After generating a new access token, the contents of the <code>/etc/passwd</code> was displayed. Sweet!🌭<br><img src="../images//backendtwo/35.png" alt="Desktop View" class="post-image"></p>
+                </div>
+
+                <footer class="post-footer">
+                    <div class="post-navigation">
+                        <a href="../index.html" class="nav-link">← Back to Blog</a>
+                    </div>
+                </footer>
+            </article>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Tender Juicy Hatdog <span class="heart">🌭</span> Hacking is not a crime.</p>
+        </div>
+    </footer>
+
+    <canvas id="matrixCanvas"></canvas>
+    <script src="../js/mobile.js"></script>
+    <script src="../js/matrix.js"></script>
+</body>
+</html>
