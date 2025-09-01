@@ -7,10 +7,10 @@ excerpt: "Mass assignment vulnerability that leads to Local File Read."
 ---
 
 # Introduction
-This blog focuses on the Mass Assignment vulnerability which leands to a Local File Read where the contents of the /etc/passwd was displayed. This is just a hackthebox machine called `BackendTwo`.
+This blog focuses on the Mass Assignment vulnerability which leads to a Local File Read where the contents of the /etc/passwd were displayed. This is just a hackthebox machine called `BackendTwo`.
 
 # Enumeration
-Of course, a typical approach to these like this, first I have fired up nmap:
+Of course, a typical approach (CTF style) to things like this... first I have fired up nmap:
 
 ![Desktop View](/backendtwo/1.png)
 
