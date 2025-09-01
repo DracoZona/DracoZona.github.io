@@ -1,5 +1,5 @@
 ---
-title: "Mass Assignment leading to Local File Read."
+title: "Mass Assignment leading to Local File Read"
 date: "2025-08-31"
 category: "Web Attacks"
 tags: ["Mass Assignment", "Web", "HackTheBox"]
