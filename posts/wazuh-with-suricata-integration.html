@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wazuh with Suricata Integration - DZ Blog</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/post.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo"><a href="../index.html"><span class="logo-draco">Draco</span><span class="logo-zona">Zona</span><span class="cursor">_</span></a></h1>
+            <nav class="nav">
+                <a href="../">Blog</a>
+                <a href="../about">About</a>
+                <a href="../cv-profile">CV</a>
+                <a href="../certifications">Certifications</a>
+                <a href="../contact">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <article class="post">
+                <div class="back-to-blog">
+                    <a href="../index.html" class="back-btn">← Back to Blog</a>
+                </div>
+                
+                <header class="post-header">
+                    <div class="post-meta">
+                        <span class="post-date">September 18, 2025</span>
+                        <span class="post-category">Security Engineering</span>
+                    </div>
+                    <h1 class="post-title">Wazuh with Suricata Integration</h1>
+                    <div class="post-tags">
+                        <span class="tag">security engineering</span><span class="tag">wazuh</span><span class="tag">suricata</span>
+                    </div>
+                </header>
+
+                <div class="post-content">
+                    <p><h1>Introduction</h1></p><p>Hello my dear reader. In this article I will be showing you how I setup wazuh and integrate suricata with it to detect nmap scans. I will try to be specific as I can in this blog since upon building this on my own, it was so frustrating that I need to go from different articles and forums because of all these annoying errors and stuff I keep on encountering. Also this blog will serve as my future notes when rebuilding this nightmare.</p><p><h1>Pre-requisites</h1><br>1. Ubuntu Server (Wazuh Manager)<br>2. Ubuntu Desktop (Wazuh Agent)<br>3. Kali Machine (Attacker) - Although I will not include how to set this up. Find other blog post about this if you're not familiar. Actually, you don't need to to be honest, but anyways. </p><p><h1>Setting up Wazuh Manager</h1></p><p>I will be setting up Wazuh 4.8 version in this article.</p><p>Prepare the server with the following commands:<br><div class="code-block"><pre><code></p><p>sudo apt update && sudo apt upgrade -y<br>sudo apt install curl gnupg lsb-release apt-transport-https software-properties-common -y</p><p></code></pre></div></p><p>Install Wazuh Manager, Dashboard, and Indexer</p><p><div class="code-block"><pre><code></p><p>curl -sO https://packages.wazuh.com/4.8/wazuh-install.sh<br>sudo bash ./wazuh-install.sh -a<br></code></pre></div></p><p>After installation, visit the dashboard through https://<'server-ip'>. For the credentials, it will be displayed after installation so make sure to save that.</p><p><h1>Setting up Wazuh Agent on Ubuntu Desktop machine</h1></p><p>It's now time to setup your Wazuh Agent on the Ubuntu Desktop.</p><p>Visit the Wazuh Dashboard again and visit the <code>Endpoints Summary</code> which can be found under <code>Server Management</code> on the side menu.<br><img src="../images//wazuh-suricata/1.png" alt="Desktop View" class="post-image"></p><p>Then click on the <code>Deploy New Agent</code>.<br><img src="../images//wazuh-suricata/2.png" alt="Desktop View" class="post-image"></p><p>Since this article will focus on Ubuntu Desktop for the Wazuh Agent, select the DEB amd64.<br><img src="../images//wazuh-suricata/3.png" alt="Desktop View" class="post-image"></p><p>Next, input the IP of the Ubuntu Server where the Wazuh Manager is installed.<br><img src="../images//wazuh-suricata/4.png" alt="Desktop View" class="post-image"></p><p>Afterwards, just put whatever agent name you want. In this case, due to poor naming skills of mine, I chose <code>ubuntu</code>.<br><img src="../images//wazuh-suricata/5.png" alt="Desktop View" class="post-image"></p><p>The next section is a command you need to copy and run on the Ubuntu Desktop (it's where the wazuh-agent will be installed.)<br><img src="../images//wazuh-suricata/6.png" alt="Desktop View" class="post-image"></p><p>After installation, run the next commands as well.<br><img src="../images//wazuh-suricata/7.png" alt="Desktop View" class="post-image"></p><p><h1>Installation and setting up Suricata</h1></p><p>On the Ubuntu Desktop (where the wazuh-agent is installed), run the following commands:</p><p><div class="code-block"><pre><code></p><p>sudo add-apt-repository ppa:oisf/suricata-stable<br>sudo apt-get update<br>sudo apt-get install suricata -y<br></code></pre></div></p><p>Afterwards, we need to download and extract to a proper location the <code>Emerging Threats Suricata ruleset</code>:<br><div class="code-block"><pre><code></p><p>cd /tmp/ && curl -LO https://rules.emergingthreats.net/open/suricata-6.0.8/emerging.rules.tar.gz<br>sudo tar -xvzf emerging.rules.tar.gz && sudo mkdir /etc/suricata/rules && sudo mv rules/*.rules /etc/suricata/rules/<br>sudo chmod 777 /etc/suricata/rules/*.rules<br></code></pre></div></p><p>If you ever encounter some wizardy error (I don't know why I said wizardy), just make sure you are root user. Just su root run the commands again.</p><p>Now, we need to modify Suricata settings located in <code>/etc/suricata/suricata.yaml</code>. Take note of the following variables that we need to change:</p><p><div class="code-block"><pre><code></p><p>HOME_NET: "<'IP OF YOUR UBUNTU DESKTOP'>"<br>EXTERNAL_NET: "any"<br></code></pre></div></p><p>For the <code>EXTERNAL_NET</code>, uncomment the one with "any". If there is none, just add it. Also you might find this <code>EXTERNAL_NET: "!$HOME_NET"</code>, make sure to comment that out by addting <code>#</code> before it.</p><p>Then in the same file, search for the <code>default-rule-path</code> and set the value to <code>/etc/suricata/rules</code>. Also modify the <code>rule-files</code> into <code>*.rules</code>. It should look like the one below:</p><p><div class="code-block"><pre><code></p><p>default-rule-path: /etc/suricata/rules<br>rule-files:<br>  - "*.rules"<br></code></pre></div></p><p>In the same configuration file, look for <code>af-packet</code> and set the interface based on your system. The default was <code>eth0</code>, but my interface was <code>ens33</code> so I changed it to that, hence it looked like this:</p><p><div class="code-block"><pre><code></p><p>#Linux high speed capture support<br>af-packet:<br>  - interface: ens33<br></code></pre></div></p><p><div class="prompt-info"><strong>Interface</strong> should be the network interface you want to monitor.</div></p><p>Afterwards, run the command to restart the suricata service:</p><p><div class="code-block"><pre><code></p><p>sudo systemctl restart suricata<br></code></pre></div></p><p>Next, open the configuration file of the Wazuh Agent which is the <code>/var/ossec/etc/ossec.conf</code>. Add the following lines at the end of the configuration file to allow Wazuh agent to read the Suricata logs file:</p><p><img src="../images//wazuh-suricata/8.png" alt="Desktop View" class="post-image"></p><p>Afterwards, restart the wazuh agent to apply the changes: <code>sudo systemctl restart wazuh-agent</code>.</p><p><h1>Kali Machine</h1></p><p>Execute a nmap scan against the Ubuntu Desktop. </p><p><div class="code-block"><pre><code></p><p>nmap -sS -p- -T4 -v <Ubuntu Desktop IP><br></code></pre></div></p><p><h1>Wazuh Dashboard</h1><br>Navigate to the <code>Threat Hunting</code>. You can find it under <code>Threat Intelligence</code>. If you are in the overview page, you can see it like this:<br><img src="../images//wazuh-suricata/9.png" alt="Desktop View" class="post-image"></p><p>You can also find it in the side menu:<br><img src="../images//wazuh-suricata/10.png" alt="Desktop View" class="post-image"></p><p>Make sure you are in the ubuntu agent then click on the <code>Events</code> tab.<br><img src="../images//wazuh-suricata/11.png" alt="Desktop View" class="post-image"></p><p>Then in the search bar, input this to sort the suricata alerts: </p><p><div class="code-block"><pre><code></p><p>rule.groups:suricata<br></code></pre></div></p><p>Then afterwards you should see something like this:<br><img src="../images//wazuh-suricata/12.png" alt="Desktop View" class="post-image"></p><p><br><h1>Conclusion</h1></p><p>That's pretty straight forward. That's all.</p>
+                </div>
+
+                <footer class="post-footer">
+                    <div class="post-navigation">
+                        <a href="../index.html" class="nav-link">← Back to Blog</a>
+                    </div>
+                </footer>
+            </article>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Tender Juicy Hatdog <span class="heart">🌭</span> Hacking is not a crime.</p>
+        </div>
+    </footer>
+
+    <canvas id="matrixCanvas"></canvas>
+    <script src="../js/mobile.js"></script>
+    <script src="../js/matrix.js"></script>
+</body>
+</html>
