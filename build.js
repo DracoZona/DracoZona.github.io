@@ -243,9 +243,9 @@ function buildBlog() {
             excerpt: post.excerpt
         }));
         
-        const fallbackString = JSON.stringify(fallbackData, null, 4).replace(/^/gm, '    ');
+        const fallbackString = JSON.stringify(fallbackData, null, 4);
         blogJsContent = blogJsContent.replace(
-            /const fallbackPosts = \[[\s\S]*?\];/,
+            /const fallbackPosts\s*=\s*\[[\s\S]*?\];/,
             `const fallbackPosts = ${fallbackString};`
         );
         
