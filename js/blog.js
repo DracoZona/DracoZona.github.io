@@ -11,68 +11,79 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Fallback posts data
-const fallbackPosts =     [
-        {
-            "title": "Mass Assignment leading to Local File Read.",
-            "slug": "mass-assignment-leading-to-local-file-read",
-            "date": "2025-08-31",
-            "category": "Web Attacks",
-            "tags": [
-                "Mass Assignment",
-                "HackTheBox",
-                "Web"
-                
-            ],
-            "excerpt": "Mass assignment vulnerability that leads to Local File Read."
-        },
-        {
-            "title": "Shared Folder Setup for VMWare",
-            "slug": "shared-folder-setup-for-vmware",
-            "date": "2025-08-28",
-            "category": "My Notes",
-            "tags": [
-                "My Notes",
-                "General"
-            ],
-            "excerpt": "Setting up a shared folder for my vmware setup. Made a post for future reference."
-        },
-        {
-            "title": "DFIR Sherlock Challenge - Brutus",
-            "slug": "dfir-sherlock-challenge-brutus",
-            "date": "2025-04-03",
-            "category": "DFIR",
-            "tags": [
-                "DFIR",
-                "HTB",
-                "Defensive Security"
-            ],
-            "excerpt": "Digital Forensics and Incident Response (DFIR) challenge from HTB Sherlocks."
-        },
-        {
-            "title": "Active Directory Series - Machine 2",
-            "slug": "active-directory-series-machine-2",
-            "date": "2025-04-02",
-            "category": "Active Directory",
-            "tags": [
-                "AD",
-                "HTB",
-                "Offensive Security"
-            ],
-            "excerpt": "EscapeTwo. Second machine in the Active Directory Exploitation track in HackTheBox. A little bit harder in my perspective, but it was fun."
-        },
-        {
-            "title": "Active Directory Series - Machine 1",
-            "slug": "active-directory-series-machine-1",
-            "date": "2025-03-30",
-            "category": "Active Directory",
-            "tags": [
-                "AD",
-                "HTB",
-                "Offensive Security"
-            ],
-            "excerpt": "First machine in the Active Directory Exploitation tracks in HackTheBox. This is a chill machine, but full of new learnings."
-        }
-    ];
+const fallbackPosts = [
+    {
+        "title": "Wazuh with Suricata Integration",
+        "slug": "wazuh-with-suricata-integration",
+        "date": "2025-09-18",
+        "category": "Security Engineering",
+        "tags": [
+            "security engineering",
+            "wazuh",
+            "suricata"
+        ],
+        "excerpt": "This article is about Wazuh installation with Suricata integration. This serves as a guide to properly integrate suricata in wazuh."
+    },
+    {
+        "title": "Mass Assignment leading to Local File Read",
+        "slug": "mass-assignment-leading-to-local-file-read",
+        "date": "2025-08-31",
+        "category": "Web Attacks",
+        "tags": [
+            "Mass Assignment",
+            "Web",
+            "HackTheBox"
+        ],
+        "excerpt": "Mass assignment vulnerability that leads to Local File Read."
+    },
+    {
+        "title": "Shared Folder Setup for VMWare",
+        "slug": "shared-folder-setup-for-vmware",
+        "date": "2025-08-28",
+        "category": "My Notes",
+        "tags": [
+            "My Notes",
+            "General"
+        ],
+        "excerpt": "Setting up a shared folder for my vmware setup. Made a post for future reference."
+    },
+    {
+        "title": "DFIR Sherlock Challenge - Brutus",
+        "slug": "dfir-sherlock-challenge-brutus",
+        "date": "2025-04-03",
+        "category": "DFIR",
+        "tags": [
+            "DFIR",
+            "HTB",
+            "Defensive Security"
+        ],
+        "excerpt": "Digital Forensics and Incident Response (DFIR) challenge from HTB Sherlocks."
+    },
+    {
+        "title": "Active Directory Series - Machine 2",
+        "slug": "active-directory-series-machine-2",
+        "date": "2025-04-02",
+        "category": "Active Directory",
+        "tags": [
+            "AD",
+            "HTB",
+            "Offensive Security"
+        ],
+        "excerpt": "EscapeTwo. Second machine in the Active Directory Exploitation track in HackTheBox. A little bit harder in my perspective, but it was fun."
+    },
+    {
+        "title": "Active Directory Series - Machine 1",
+        "slug": "active-directory-series-machine-1",
+        "date": "2025-03-30",
+        "category": "Active Directory",
+        "tags": [
+            "AD",
+            "HTB",
+            "Offensive Security"
+        ],
+        "excerpt": "First machine in the Active Directory Exploitation tracks in HackTheBox. This is a chill machine, but full of new learnings."
+    }
+];
 
 // Load posts from JSON data
 async function loadPosts() {
